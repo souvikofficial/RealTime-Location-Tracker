@@ -35,6 +35,6 @@ app.get("/",(req,res)=>{
 });
 
 
-app.listen(3000,()=>{
+server.listen(3000,()=>{
     console.log("App is Listening to your Port 3000");
 });
