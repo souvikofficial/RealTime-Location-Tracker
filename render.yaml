@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: realtime-location-tracker
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node app.js
+    autoDeploy: true
+    pullRequestPreviewsEnabled: true
