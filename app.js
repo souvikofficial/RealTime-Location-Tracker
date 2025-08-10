@@ -108,7 +108,7 @@ io.on("connection", function(socket){
 // Middleware
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
-app.use(express.json()); // Parse JSON bodies
+app.use(express.json());
 
 // Routes
 app.get("/", (req, res) => {

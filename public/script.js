@@ -6,7 +6,7 @@ let isFirstLocation = true;
 socket.on("connect", () => {
     console.log("Connected to server");
     updateStatus('connected');
-    hideLoading(); // From the HTML we improved
+    hideLoading();
 });
 
 socket.on("disconnect", () => {
@@ -63,7 +63,7 @@ if (navigator.geolocation) {
                     break;
             }
             
-            showError(errorMessage); // From the HTML we improved
+            showError(errorMessage);
         },
         {
             enableHighAccuracy: false,
@@ -75,13 +75,14 @@ if (navigator.geolocation) {
     showError("Geolocation is not supported by this browser.");
 }
 
-// Initialize the map
+// Initialize map with better styling
 const map = L.map("map").setView([0, 0], 2);
 
-// Add tile layer with better styling
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    maxZoom: 18,
+// Add CartoDB Voyager tiles (better looking than default OpenStreetMap)
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19,
     minZoom: 2
 }).addTo(map);
 
@@ -92,16 +93,19 @@ let colorIndex = 0;
 
 // Create custom marker icons
 function createUserIcon(color, isCurrentUser = false) {
+    const size = isCurrentUser ? 16 : 12;
+    const borderSize = isCurrentUser ? 20 : 16;
+    
     return L.divIcon({
         html: `<div style="
             background-color: ${color};
-            width: ${isCurrentUser ? '16px' : '12px'};
-            height: ${isCurrentUser ? '16px' : '12px'};
+            width: ${size}px;
+            height: ${size}px;
             border-radius: 50%;
             border: 2px solid white;
             box-shadow: 0 2px 4px rgba(0,0,0,0.3);
         "></div>`,
-        iconSize: [isCurrentUser ? 20 : 16, isCurrentUser ? 20 : 16],
+        iconSize: [borderSize, borderSize],
         className: 'custom-marker-icon'
     });
 }
@@ -128,6 +132,15 @@ socket.on("receive-location", (data) => {
             markers[id].accuracyCircle.setLatLng([latitude, longitude]);
             markers[id].accuracyCircle.setRadius(accuracy);
         }
+        
+        // Update popup content
+        const popupContent = `
+            <b>${isCurrentUser ? 'You' : 'User ' + id.slice(-4)}</b><br>
+            Location: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}<br>
+            ${accuracy ? `Accuracy: ±${Math.round(accuracy)}m<br>` : ''}
+            Updated: ${new Date(timestamp).toLocaleTimeString()}
+        `;
+        markers[id].marker.setPopupContent(popupContent);
     } else {
         // Assign color to new user
         const userColor = userColors[colorIndex % userColors.length];
@@ -181,23 +194,22 @@ socket.on("user-disconnected", (id) => {
         
         delete markers[id];
         console.log(`User ${id.slice(-4)} disconnected`);
+        
+        // Update user count
+        updateUserCount(Object.keys(markers).length);
     }
 });
 
 // Handle active users list
 socket.on("active-users", (users) => {
     console.log(`Active users: ${users.length}`);
+    updateUserCount(users.length);
 });
 
 // Handle server errors
 socket.on("error", (error) => {
     console.error("Server error:", error);
     showError(error);
-});
-
-// Map controls and features
-map.on('click', function(e) {
-    console.log(`Map clicked at: ${e.latlng.lat}, ${e.latlng.lng}`);
 });
 
 // Add zoom control customization
