@@ -53,6 +53,3 @@ socket.on("user-disconnected",(id) => {
         delete markers[id];
     }
 });
-
-
-console.log("Hello");
