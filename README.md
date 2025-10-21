@@ -21,7 +21,7 @@ A real-time location tracking application that allows multiple users to share an
 - **Templating:** EJS
 - **Geolocation:** HTML5 Geolocation API
 
-## 🚀 Quick Start
+## 🚀 **Quick Start**
 
 ## 🚀 Live Demo
 
@@ -56,7 +56,7 @@ RealTime-Location-Tracker/
 └── README.md # This file
 
 
-## 🎯 How It Works
+## How It Works
 
 1. **User Connection**: When a user visits the site, they connect to the Socket.io server
 2. **Location Request**: Browser requests user's location using HTML5 Geolocation API
@@ -64,7 +64,7 @@ RealTime-Location-Tracker/
 4. **Live Updates**: Server broadcasts location updates to all connected users
 5. **Map Visualization**: Each user's location appears as a marker on the interactive map
 
-## 📱 Usage
+## Usage
 
 1. **Open the application** in your web browser
 2. **Allow location access** when prompted
@@ -72,7 +72,7 @@ RealTime-Location-Tracker/
 4. **Watch live locations** update on the map in real-time
 5. **Markers automatically update** as users move around
 
-## ⚙️ Configuration
+## Configuration
 
 ### Server Port
 // Change port in app.js (default: 3000)
@@ -88,7 +88,7 @@ timeout: 10000, // 10 second timeout
 maximumAge: 0 // Don't use cached location
 }
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Location Not Working?
 ✅ Ensure location services are enabled in your browser
