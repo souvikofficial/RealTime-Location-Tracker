@@ -37,11 +37,11 @@ A real-time location tracking application that allows multiple users to share an
 ### Installation
 
 1. **git clone https://github.com/souvikofficial/RealTime-Location-Tracker.git
-   cd RealTime-Location-Tracker**
-2. **npm install**
-3. **node app.js**
-4. **Open your browser** : http://localhost:3000
-5. **Allow location access** when prompted by your browser
+2.  cd RealTime-Location-Tracker**
+3. **npm install**
+4. **node app.js**
+5. **Open your browser** : http://localhost:3000
+6. **Allow location access** when prompted by your browser
 
 
 ## 📁 Project Structure
